@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <title>Relatório de Insights - {{ platform }}</title>
+</head>
+<body>
+
+    <h2>📊 Relatório de Insights - {{ platform | capitalize }}</h2>
+
+    {% set expected_columns = ["adName", "clicks", "cost", "impressions", "region", "status"] %}
+
+    <table id="insightsTable">
+        <thead>
+            <tr>
+                <th data-column="0" onclick="sortTable(this)">Plataforma <span class="sort-icon">⬍</span></th>
+                <th data-column="1" onclick="sortTable(this)">Nome da Conta <span class="sort-icon">⬍</span></th>
+                {% for column in expected_columns %}
+                    <th data-column="{{ loop.index + 1 }}" onclick="sortTable(this)">
+                        {{ column | replace('_', ' ') | capitalize }} <span class="sort-icon">⬍</span>
+                    </th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for insight in insights %}
+                {% for ad in insight.insights.insights %}
+                <tr>
+                    <td>{{ insight.platform | capitalize }}</td>
+                    <td>{{ insight.name }}</td>
+                    {% for column in expected_columns %}
+                        {% if column == "cost" %}
+                            <td>
+                                {% if ad.get(column) is not none %}
+                                    R$ {{ "{:,.2f}".format(ad[column]).replace(",", "X").replace(".", ",").replace("X", ".") }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                        {% elif column == "status" %}
+                            <td class="status">
+                                {% if ad.get(column) %}
+                                    <span class="status-circle {% if ad[column] == 'ACTIVE' %}status-active{% elif ad[column] == 'PAUSED' %}status-paused{% endif %}"></span>
+                                {% endif %}
+                                {{ ad.get(column, "-") }}
+                            </td>
+                        {% else %}
+                            <td>{{ ad.get(column, "-") }}</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script src="{{ url_for('static', filename='js/sortTable.js') }}"></script>
+</body>
+</html>

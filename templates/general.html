@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório Geral de Insights</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <h2>📊 Relatório Geral de Insights</h2>
+
+    <p>Se você acessar <code>/geral</code>, verá um resumo de todos os anúncios de todas as plataformas.</p>
+
+    <table id="generalTable">
+        <thead>
+            <tr>
+                <th onclick="sortTable(0)">Plataforma <span class="sort-icon">⬍</span></th>
+                <th onclick="sortTable(1)">Nome da Conta <span class="sort-icon">⬍</span></th>
+                <th onclick="sortTable(2)">Ad Name <span class="sort-icon">⬍</span></th>
+                <th onclick="sortTable(3)">Clicks <span class="sort-icon">⬍</span></th>
+                <th onclick="sortTable(4)">Cost <span class="sort-icon">⬍</span></th>
+                <th onclick="sortTable(5)">Impressions <span class="sort-icon">⬍</span></th>
+                <th onclick="sortTable(6)">Region <span class="sort-icon">⬍</span></th>
+                <th onclick="sortTable(7)">Status <span class="sort-icon">⬍</span></th>
+                <th onclick="sortTable(8)">Cost per Click <span class="sort-icon">⬍</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for insight in insights %}
+            <tr>
+                <td>{{ insight.platform }}</td>
+                <td>{{ insight.account_name }}</td>
+                <td>{{ insight.adName }}</td>
+                <td>{{ insight.clicks }}</td>
+                <td>
+                    {% if insight.cost != "" %}
+                        R$ {{ "{:,.2f}".format(insight.cost).replace(",", "X").replace(".", ",").replace("X", ".") }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>{{ insight.impressions }}</td>
+                <td>{{ insight.region }}</td>
+                <td class="status">
+                    {% if insight.status %}
+                        <span class="status-circle {% if insight.status == 'ACTIVE' %}status-active{% elif insight.status == 'PAUSED' %}status-paused{% endif %}"></span>
+                    {% endif %}
+                    {{ insight.status if insight.status else "-" }}
+                </td>
+                <td>
+                    {% if insight.cost_per_click != "" %}
+                        R$ {{ "{:,.2f}".format(insight.cost_per_click).replace(",", "X").replace(".", ",").replace("X", ".") }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

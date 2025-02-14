@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumo Geral de Insights</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <h2>📊 Resumo Geral de Insights</h2>
+
+    <table id="generalSummaryTable">
+        <thead>
+            <tr>
+                <th onclick="sortTable(0)">Plataforma <span class="sort-icon">⬍</span></th>
+                <th onclick="sortTable(1)">Clicks <span class="sort-icon">⬍</span></th>
+                <th onclick="sortTable(2)">Cost <span class="sort-icon">⬍</span></th>
+                <th onclick="sortTable(3)">Impressions <span class="sort-icon">⬍</span></th>
+                <th onclick="sortTable(4)">Cost per Click <span class="sort-icon">⬍</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for insight in insights %}
+            <tr>
+                <td>{{ insight.platform }}</td>
+                <td>{{ insight.clicks }}</td>
+                <td>
+                    R$ {{ "{:,.2f}".format(insight.cost).replace(",", "X").replace(".", ",").replace("X", ".") }}
+                </td>
+                <td>{{ insight.impressions }}</td>
+                <td>
+                    {% if insight.cost_per_click != "" %}
+                        R$ {{ "{:,.2f}".format(insight.cost_per_click).replace(",", "X").replace(".", ",").replace("X", ".") }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

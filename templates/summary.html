@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumo de Insights - {{ platform | capitalize }}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <h2>📊 Resumo de Insights - {{ platform | capitalize }}</h2>
+
+    <table id="summaryTable">
+        <thead>
+            <tr>
+                <th>Plataforma</th>
+                <th>Nome da Conta</th>
+                <th>Clicks</th>
+                <th>Cost</th>
+                <th>Impressions</th>
+                <th>Region</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for insight in insights %}
+            <tr>
+                <td>{{ insight.platform | capitalize }}</td>
+                <td>{{ insight.name }}</td>
+                <td>{{ insight.clicks }}</td>
+                <td>R$ {{ "{:,.2f}".format(insight.cost).replace(",", "X").replace(".", ",").replace("X", ".") }}</td>
+                <td>{{ insight.impressions }}</td>
+                <td>{{ insight.region }}</td>
+                <td class="status">
+                    {% if insight.status %}
+                        <span class="status-circle {% if insight.status == 'ACTIVE' %}status-active{% elif insight.status == 'PAUSED' %}status-paused{% endif %}"></span>
+                    {% endif %}
+                    {{ insight.status if insight.status else "-" }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

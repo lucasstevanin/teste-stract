@@ -1,0 +1,54 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+    background-color: #1e1e1e;
+    color: white;
+}
+h2 {
+    color: #f88d00;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #2d2d2d;
+    color: white;
+}
+th, td {
+    border: 1px solid #f88d00;
+    padding: 10px;
+    text-align: left;
+}
+th {
+    background-color: #f88d00;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+}
+tr:nth-child(even) {
+    background-color: #3a3a3a;
+}
+code {
+    background-color: #333;
+    padding: 4px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+/* Estilo da bolinha do status */
+.status {
+    display: flex;
+    align-items: center;
+}
+.status-circle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+}
+.status-active {
+    background-color: #4CAF50; /* Verde para Active */
+}
+.status-paused {
+    background-color: #808080; /* Cinza para Paused */
+}
