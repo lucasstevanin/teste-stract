@@ -1,5 +1,6 @@
+// Filtro de tabela
 function sortTable(thElement) {
-    var columnIndex = thElement.getAttribute("data-column");  // Obtém o índice correto
+    var columnIndex = thElement.getAttribute("data-column");
     var table = document.getElementById("insightsTable");
     var rows = Array.from(table.getElementsByTagName("tr")).slice(1);
     var isNumeric = !isNaN(rows[0].cells[columnIndex]?.textContent.trim().replace("R$ ", "").replace(",", "."));

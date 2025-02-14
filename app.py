@@ -1,7 +1,5 @@
 from flask import Flask, render_template, jsonify, Response
 import requests
-import json
-
 
 app = Flask(__name__)
 
@@ -14,15 +12,11 @@ HEADERS = {
     "Authorization": "ProcessoSeletivoStract2025"
 }
 
-# Token de autenticação exigido pelo endpoint
-HEADERS = {
-    "Authorization": "ProcessoSeletivoStract2025"
-}
 
 # URL base da API externa
 BASE_URL = "https://sidebar.stract.to/api/"
 
-# ✅ Função única para buscar contas de qualquer plataforma (GA4, Meta Ads, TikTok Insights, etc.)
+# Função para buscar contas de qualquer plataforma (GA4, Meta Ads, TikTok Insights, etc.)
 def get_all_accounts_by_platform(platform):
     all_data = []
     page = 1  
@@ -46,12 +40,12 @@ def get_all_accounts_by_platform(platform):
 
     return all_data
 
-# ✅ Função para buscar insights de qualquer plataforma (GA4, Meta Ads, TikTok Insights, etc.)
+# Função para buscar insights de qualquer plataforma (GA4, Meta Ads, TikTok Insights, etc.)
 def get_insights_for_accounts(platform):
     accounts = get_all_accounts_by_platform(platform)
 
     if "error" in accounts:
-        return accounts  # Retorna erro caso tenha ocorrido na requisição de contas
+        return accounts 
 
     insights_data = []
 
@@ -81,7 +75,7 @@ def get_insights_for_accounts(platform):
 
     return insights_data
 
-# ✅ Endpoint único para buscar insights de qualquer plataforma
+# Endpoint para buscar insights de qualquer plataforma
 @app.route("/<platform>")
 def get_insights(platform):
     insights_data = get_insights_for_accounts(platform)
@@ -89,9 +83,6 @@ def get_insights(platform):
     if "error" in insights_data:
         return jsonify(insights_data), 500
 
-    # Retorna os insights como JSON
-    print(insights_data)
-    # return Response(json.dumps(insights_data, ensure_ascii=False, indent=4), mimetype="application/json; charset=utf-8")
     return render_template("insights.html", insights=insights_data, platform=platform)
 
 @app.route("/<platform>/resumo")
